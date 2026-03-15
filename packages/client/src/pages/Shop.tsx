@@ -5,6 +5,7 @@ import { Grid, Typography, CircularProgress, Box, FormControl, InputLabel, Selec
 import type { SelectChangeEvent } from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import ProductDetail from '../components/ProductDetail';
+import { API_BASE_URL } from '../config';
 
 interface Product {
   id: number;
@@ -37,7 +38,7 @@ const Shop: React.FC = () => {
         setLoading(true);
         // Fetching all products as base, we'll filter client-side for more fluid UX if needed, 
         // but sticking to existing pattern of fetching by category if selected.
-        const url = 'http://localhost:3001/api/products';
+        const url = `${API_BASE_URL}/api/products`;
         const response = await axios.get(url);
         setProducts(response.data);
       } catch (err: any) {

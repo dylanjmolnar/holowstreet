@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Card, CardContent, CardActions, Tabs, Tab, FormControl, InputLabel, Select, MenuItem, CardMedia, CardActionArea, Checkbox, FormControlLabel, Divider, TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import AddEditProductForm from '../components/AddEditProductForm';
 import { resolveImageUrl } from '../utils/imageUtils';
 
@@ -71,7 +72,7 @@ const Admin: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/products');
+      const response = await axios.get(`${API_BASE_URL}/api/products`);
       setProducts(response.data);
     } catch (err: any) {
       setError('Failed to fetch products.');
@@ -81,7 +82,7 @@ const Admin: React.FC = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/orders');
+      const response = await axios.get(`${API_BASE_URL}/api/orders`);
       setOrders(response.data);
     } catch (err: any) {
       setError('Failed to fetch orders.');
@@ -166,7 +167,7 @@ const Admin: React.FC = () => {
 
   const handleViewOrder = async (orderId: number) => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/orders/${orderId}`);
+      const response = await axios.get(`${API_BASE_URL}/api/orders/${orderId}`);
       setSelectedOrder(response.data);
       setOpenOrderDetail(true);
     } catch (err: any) {

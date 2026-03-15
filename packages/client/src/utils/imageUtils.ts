@@ -1,4 +1,6 @@
-const SERVER_BASE_URL = 'http://localhost:3001';
+import { API_BASE_URL } from '../config';
+
+const SERVER_BASE_URL = API_BASE_URL;
 
 /**
  * Resolves an image URL. If the URL is a relative path (e.g. /uploads/...),

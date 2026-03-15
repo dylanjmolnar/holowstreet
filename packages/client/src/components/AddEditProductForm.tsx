@@ -4,6 +4,7 @@ import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import { resolveImageUrl } from '../utils/imageUtils';
+import { API_BASE_URL } from '../config';
 
 interface ProductFormProps {
   product?: {
@@ -150,7 +151,7 @@ const AddEditProductForm: React.FC<ProductFormProps> = ({ product, onSuccess }) 
       const formData = new FormData();
       imageFiles.forEach(file => formData.append('images', file));
       try {
-        const uploadResponse = await axios.post('http://localhost:3001/api/upload-images', formData, {
+        const uploadResponse = await axios.post(`${API_BASE_URL}/api/upload-images`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
         uploadedImageUrls = uploadResponse.data.imageUrls;
@@ -193,9 +194,9 @@ const AddEditProductForm: React.FC<ProductFormProps> = ({ product, onSuccess }) 
 
     try {
       if (product) {
-        await axios.put(`http://localhost:3001/api/products/${product.id}`, productData);
+        await axios.put(`${API_BASE_URL}/api/products/${product.id}`, productData);
       } else {
-        await axios.post('http://localhost:3001/api/products', productData);
+        await axios.post(`${API_BASE_URL}/api/products`, productData);
       }
       onSuccess();
     } catch (err) {
@@ -207,7 +208,7 @@ const AddEditProductForm: React.FC<ProductFormProps> = ({ product, onSuccess }) 
     if (!product) return;
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await axios.delete(`http://localhost:3001/api/products/${product.id}`);
+        await axios.delete(`${API_BASE_URL}/api/products/${product.id}`);
         onSuccess();
       } catch (err) {
         setError('Failed to delete product.');

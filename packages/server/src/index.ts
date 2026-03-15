@@ -16,8 +16,11 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the 'public/uploads' directory
-app.use('/uploads', express.static(path.join(process.cwd(), 'public', 'uploads')));
+// Serve static files from the 'uploads' directory
+const uploadDir = process.env.RENDER_DISK_PATH 
+  ? path.join(process.env.RENDER_DISK_PATH, 'uploads')
+  : path.join(process.cwd(), 'public', 'uploads');
+app.use('/uploads', express.static(uploadDir));
 
 app.use('/api/products', productsRouter);
 app.use('/api/orders', ordersRouter);

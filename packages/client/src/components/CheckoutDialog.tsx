@@ -10,6 +10,7 @@ import { CardElement, Elements, useStripe, useElements } from '@stripe/react-str
 import { loadStripe } from '@stripe/stripe-js';
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import { useCart } from '../context/CartContext';
+import { API_BASE_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -59,7 +60,7 @@ const StripeCardForm = ({
 
     try {
       // 1. Create PaymentIntent on server
-      const { data } = await axios.post('http://localhost:3001/api/stripe/create-payment-intent', {
+      const { data } = await axios.post(`${API_BASE_URL}/api/stripe/create-payment-intent`, {
         amount: total,
       });
 
@@ -83,7 +84,7 @@ const StripeCardForm = ({
 
       if (paymentIntent?.status === 'succeeded') {
         // 3. Create order in our DB
-        const orderRes = await axios.post('http://localhost:3001/api/stripe/confirm-order', {
+        const orderRes = await axios.post(`${API_BASE_URL}/api/stripe/confirm-order`, {
           customer_name: customerName,
           customer_email: customerEmail,
           ...shippingAddress,
@@ -541,7 +542,7 @@ const CheckoutDialog = ({ open, onClose }: CheckoutDialogProps) => {
               style={{ layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay' }}
               createOrder={async () => {
                 setError('');
-                const { data } = await axios.post('http://localhost:3001/api/paypal/create-order', {
+                const { data } = await axios.post(`${API_BASE_URL}/api/paypal/create-order`, {
                   amount: total,
                 });
                 return data.orderID;
@@ -549,7 +550,7 @@ const CheckoutDialog = ({ open, onClose }: CheckoutDialogProps) => {
               onApprove={async (data: any) => {
                 setPaypalLoading(true);
                 try {
-                  const res = await axios.post('http://localhost:3001/api/paypal/capture-order', {
+                  const res = await axios.post(`${API_BASE_URL}/api/paypal/capture-order`, {
                     orderID: data.orderID,
                     customer_name: customerName,
                     customer_email: customerEmail,
